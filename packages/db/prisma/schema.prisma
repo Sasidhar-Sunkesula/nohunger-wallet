@@ -10,7 +10,32 @@ datasource db {
 
 model RestaurantList {
   resId Int  @id @unique
-  menu  Json 
+  menu  Json
+}
+
+model Cart {
+  id        Int         @id @default(autoincrement())
+  userId    Int
+  createdAt DateTime  @default(now())
+  user      User        @relation(fields: [userId], references: [id])
+  CartItems CartItems[]
+}
+
+model Items {
+  id        Int         @id
+  item_name String
+  img_url   String
+  cost      Int
+  rating    Float
+  CartItems CartItems[]
+}
+
+model CartItems {
+  id     Int   @id @default(autoincrement())
+  cartId Int
+  itemId Int
+  cart   Cart  @relation(fields: [cartId], references: [id])
+  Items  Items @relation(fields: [itemId], references: [id])
 }
 
 model User {
@@ -19,6 +44,7 @@ model User {
   name              String?
   number            String              @unique
   password          String
+  Cart              Cart[]
   OnRampTransaction OnRampTransaction[]
   Balance           Balance[]
   sentTransfers     p2pTransfer[]       @relation(name: "FromUserRelation")
