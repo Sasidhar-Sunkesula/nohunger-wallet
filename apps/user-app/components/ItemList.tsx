@@ -1,32 +1,37 @@
 import { CDN_URL } from "@/app/lib/constants";
 import { AddToCartClient } from "./AddToCartClient";
 
-export interface Item{
-    name: string;
-    price: number;
-    ratings: any;
-    imageId: string;
-  }
-interface Props{
-    key: number;
-    itemObj: Item
-  }
-  const ItemList = ({ itemObj }: Props) => {
-    const { name, price, ratings, imageId } = itemObj;
-    
-    return (
-      <div className="flex justify-between p-4 rounded-lg my-3 w-4/5 mx-auto bg-orange-50 items-center">
-        <div>
-          <div className="font-semibold text-lg">{name}</div>
-          <div>{price / 100}</div>
-          <div>{ratings.aggregatedRating.rating}</div>
+export interface Item {
+  id: number;
+  name: string;
+  price: number;
+  ratings: number;
+  imageId: string;
+}
+const ItemList = ({ id, name, price, ratings, imageId }: Item) => {
+  return (
+    <div className="flex justify-between p-4 rounded-lg my-3 w-4/5 mx-auto bg-orange-50 items-center">
+      <div>
+        <div className="font-semibold text-lg">{name}</div>
+        <div className="font-bold mt-1">
+          {price ? "₹" + price / 100 : "customized"}
         </div>
-        <div className="relative">
-          <img className="w-36 h-28 rounded-md" src={CDN_URL + imageId}></img>
-          <AddToCartClient itemObj={itemObj}/>
+        <div className="font-medium w-max mt-1 text-white text-base rounded-sm bg-green-400 px-2 py-1">
+          {!ratings ? 0 : ratings}⭐
         </div>
       </div>
-    );
-  };
-  
-  export default ItemList;
+      <div className="relative">
+        <img className="w-36 h-28 rounded-md" src={CDN_URL + imageId}></img>
+        <AddToCartClient
+          id={id}
+          name={name}
+          price={price}
+          ratings={ratings}
+          imageId={imageId}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default ItemList;
