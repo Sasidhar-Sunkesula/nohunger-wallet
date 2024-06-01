@@ -66,7 +66,14 @@ export default async function Menu({ params }: { params: { resId: string } }) {
       <div className="rounded-lg shadow-2xl w-2/5 border-2 mx-auto">
         <AllItems />
         {menuList.map((item: any) => (
-          <ItemList key={item.card.info.id} itemObj={item.card.info} />
+          <ItemList
+            key={item.card.info.id}
+            id={parseInt(item.card.info.id)}
+            name={item.card.info.name}
+            price={item.card.info.price}
+            ratings={parseFloat(item.card.info.ratings.aggregatedRating.rating)}
+            imageId={item.card.info.imageId}
+          />
         ))}
       </div>
     </div>

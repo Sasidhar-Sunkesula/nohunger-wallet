@@ -77,7 +77,12 @@ export const authOptions: NextAuthOptions = {
               locked: 0,
             },
           });
-
+          const cart = await db.cart.create({
+            data: {
+              userId: user.id,
+              createdAt: new Date(),
+            },
+          });
           return {
             id: user.id.toString(),
             name: user.name,
