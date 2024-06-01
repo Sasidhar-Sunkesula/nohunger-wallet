@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/@prisma/client"
 }
 
 datasource db {
@@ -16,17 +15,17 @@ model RestaurantList {
 model Cart {
   id        Int         @id @default(autoincrement())
   userId    Int
-  createdAt DateTime  @default(now())
+  createdAt DateTime    @default(now())
   user      User        @relation(fields: [userId], references: [id])
   CartItems CartItems[]
 }
 
 model Items {
   id        Int         @id
-  item_name String
-  img_url   String
-  cost      Int
-  rating    Float
+  name      String
+  imageId   String
+  price     Int
+  ratings   Float
   CartItems CartItems[]
 }
 
@@ -45,10 +44,20 @@ model User {
   number            String              @unique
   password          String
   Cart              Cart[]
+  Orders            Orders[]
   OnRampTransaction OnRampTransaction[]
   Balance           Balance[]
   sentTransfers     p2pTransfer[]       @relation(name: "FromUserRelation")
   receivedTransfers p2pTransfer[]       @relation(name: "ToUserRelation")
+}
+
+model Orders {
+  id         Int         @id @default(autoincrement())
+  status     OrderStatus
+  userId     Int
+  orderTotal Float
+  date       DateTime
+  user       User        @relation(fields: [userId], references: [id])
 }
 
 model OnRampTransaction {
@@ -83,6 +92,12 @@ model Balance {
 enum AuthType {
   Google
   Github
+}
+
+enum OrderStatus {
+  Success
+  Failure
+  Processing
 }
 
 enum OnRampStatus {
