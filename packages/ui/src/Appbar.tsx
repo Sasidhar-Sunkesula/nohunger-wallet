@@ -1,6 +1,6 @@
 import { LinkComponent } from "./Link";
 import { Button } from "./button";
-
+import Link from "next/link";
 interface LinkProps {
   to: string;
   text: string;
@@ -14,11 +14,20 @@ interface AppbarProps {
   headerLinks: LinkProps[];
 }
 
-
-export const Appbar = ({ user, onSignin, onSignout, headerLinks }: AppbarProps) => {
+export const Appbar = ({
+  user,
+  onSignin,
+  onSignout,
+  headerLinks,
+}: AppbarProps) => {
   return (
     <div className="flex justify-between border-b py-2 px-4 border-slate-300">
-      <div className="text-xl font-bold text-red-900  flex items-center justify-center">No Hunger</div>
+      <Link
+        href={"/"}
+        className="text-xl font-bold text-red-900  flex items-center justify-center"
+      >
+        No Hunger
+      </Link>
       <div className="flex items-center border gap-x-5 justify-center pt-2">
         {headerLinks.map((item: LinkProps, index: number) => (
           <LinkComponent key={index} item={item} />
