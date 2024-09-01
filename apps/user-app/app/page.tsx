@@ -15,6 +15,7 @@ import { setCart } from "@repo/store/cartSlice";
 import { useDispatch } from "react-redux";
 import { CDN_URL } from "./lib/constants";
 
+
 export default function Page() {
   const dispatch = useDispatch();
   const fetchCart = async (userId: number) => {
