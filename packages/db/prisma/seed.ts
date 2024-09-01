@@ -52,6 +52,27 @@ async function main() {
   //   },
   // })
   // console.log({ alice, bob });
+  // const cart = await prisma.cart.create({
+  //   data: {
+  //     userId: 1,
+  //     createdAt: new Date(),
+  //   },
+  // });
+  // const item = await prisma.items.create({
+  //   data: {
+  //     id: 654321,
+  //     name: "sasi123",
+  //     imageId: "http://example.com/item12.jpg",
+  //     price: 2500,
+  //     ratings: 4.4,
+  //   },
+  // });
+  // const cartItems = await prisma.cartItems.create({
+  //   data: {
+  //     cartId: 1,
+  //     itemId: 654321,
+  //   },
+  // });
 }
 main()
   .then(async () => {

@@ -15,8 +15,11 @@ import Spinner from "@repo/ui/spinner";
 import { makePayment } from "../lib/actions/makePayment";
 import { getBalance } from "../lib/actions/getTransactions";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Cart() {
+  const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [fetchingPrice, setFetchingPrice] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -124,9 +127,12 @@ export default function Cart() {
               <button
                 onClick={async () => {
                   setIsProcessing(true);
-                  makePayment();
+                  const response = await makePayment();
                   fetchBalance();
                   setIsProcessing(false);
+                  if (response?.status === "error") {
+                    router.push("/transfer");
+                  }
                 }}
                 type="button"
                 disabled={isProcessing}
@@ -137,7 +143,7 @@ export default function Cart() {
                   : `Pay ${fetchingPrice ? "..." : cost} with wallet`}
               </button>
             </div>
-          )}
+          )} 
         </div>
       )}
     </div>

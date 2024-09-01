@@ -5,6 +5,7 @@ import { authOptions } from "../auth";
 import prisma from "@repo/db/client";
 import { getCartTotal } from "./cart";
 import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 
 export async function makePayment() {
   // check if user exists
@@ -36,7 +37,8 @@ export async function makePayment() {
         },
       });
       if (!walletBalance || walletBalance.amount < totalCost.cost) {
-        redirect("/transfer");
+        // throw Error("Insufficient funds");
+        redirect("/");
       }
       if (walletBalance.amount > totalCost.cost) {
         const updateBalance = await prisma.balance.update({
@@ -70,6 +72,7 @@ export async function makePayment() {
     }
   } catch (error: any) {
     return {
+      status: "error",
       message: error.message,
     };
   }

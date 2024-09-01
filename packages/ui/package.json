@@ -10,7 +10,8 @@
     "./center": "./src/Center.tsx",
     "./select": "./src/Select.tsx",
     "./textinput": "./src/TextInput.tsx",
-    "./LinkComponent": "./src/Link.tsx"
+    "./LinkComponent": "./src/Link.tsx",
+    "./spinner": "./src/Spinner.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

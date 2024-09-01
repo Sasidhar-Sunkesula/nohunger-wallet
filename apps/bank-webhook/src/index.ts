@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json())
 
 app.post("/hdfcWebhook", async (req, res) => {
-    
+
     const paymentInformation: {
         token: string;
         userId: string;
@@ -34,7 +34,7 @@ app.post("/hdfcWebhook", async (req, res) => {
             db.onRampTransaction.updateMany({
                 where: {
                     token: paymentInformation.token
-                }, 
+                },
                 data: {
                     status: "Success",
                 }
@@ -44,7 +44,7 @@ app.post("/hdfcWebhook", async (req, res) => {
         res.json({
             message: "Captured"
         })
-    } catch(e) {
+    } catch (e) {
         console.error(e);
         res.status(411).json({
             message: "Error while processing webhook"
@@ -53,6 +53,6 @@ app.post("/hdfcWebhook", async (req, res) => {
 
 })
 
-app.listen(3003, ()=>{
+app.listen(3003, () => {
     console.log("Webhook Listening")
 });
