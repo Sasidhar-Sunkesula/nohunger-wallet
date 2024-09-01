@@ -7,8 +7,8 @@
     "./card": "./src/card.tsx",
     "./code": "./src/code.tsx",
     "./appbar": "./src/Appbar.tsx",
-    "./center": "./src/Center.tsx",
-    "./select": "./src/Select.tsx",
+    "./center": "./src/center.tsx",
+    "./select": "./src/select.tsx",
     "./textinput": "./src/TextInput.tsx",
     "./LinkComponent": "./src/Link.tsx",
     "./spinner": "./src/Spinner.tsx"
