@@ -25,7 +25,7 @@ jobs:
           file: ./docker/Dockerfile.user
           push: true
           tags: sasidhar6/no-hunger:latest
-          
+
       - name: Build and Push Bank Webhook Docker image
         uses: docker/build-push-action@v2
         with:
@@ -47,13 +47,20 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             # Pull and deploy user app
-            sudo docker pull sasidhar6/no-hunger:latest
-            sudo docker stop web-app || true
-            sudo docker rm web-app || true
-            sudo docker run -d --name web-app -p 3005:3000 sasidhar6/no-hunger:latest
-            
+            docker pull sasidhar6/no-hunger:latest
+            docker stop web-app || true
+            docker rm web-app || true
+            docker run -d --name web-app \
+              -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+              -e NEXTAUTH_URL="${{ secrets.NEXTAUTH_URL }}" \
+              -e NEXT_PUBLIC_WEBHOOK_URL="${{ secrets.NEXT_PUBLIC_WEBHOOK_URL }}" \
+              -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+              -p 3005:3000 sasidhar6/no-hunger:latest
+
             # Pull and deploy bank webhook
-            sudo docker pull sasidhar6/bank-webhook:latest
-            sudo docker stop webhook-app || true
-            sudo docker rm webhook-app || true
-            sudo docker run -d --name webhook-app -p 3003:3003 sasidhar6/bank-webhook:latest
+            docker pull sasidhar6/bank-webhook:latest
+            docker stop webhook-app || true
+            docker rm webhook-app || true
+            docker run -d --name webhook-app \
+              -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+              -p 3003:3003 sasidhar6/bank-webhook:latest
