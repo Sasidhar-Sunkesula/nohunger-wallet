@@ -1,19 +1,16 @@
 "use client";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import { authOptions } from "./lib/auth";
-import { useEffect, useState } from "react";
-import useOnlineStatus from "./lib/useOnlineStatus";
-import Link from "next/link";
-import Shimmer from "@/components/Shimmer";
 import NoInternet from "@/components/NoInternet";
-import { restaurantList } from "./lib/restaurantList";
 import RestaurantCard from "@/components/RestaurantCard";
-import { getCartDetails } from "./lib/actions/cart";
-import { useSession } from "next-auth/react";
+import Shimmer from "@/components/Shimmer";
 import { setCart } from "@repo/store/cartSlice";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { getCartDetails } from "./lib/actions/cart";
 import { CDN_URL } from "./lib/constants";
+import { restaurantList } from "./lib/restaurantList";
+import useOnlineStatus from "./lib/useOnlineStatus";
 
 export default function Page() {
   const dispatch = useDispatch();
@@ -110,11 +107,6 @@ export default function Page() {
   if (listOfRestaurants.length === 0) {
     return <Shimmer />;
   }
-  const images = [
-    CDN_URL + "fwgj6bshggyfoeq4leiw",
-    CDN_URL + "fwgj6bshggyfoeq4leiw",
-    CDN_URL + "fwgj6bshggyfoeq4leiw",
-  ];
   return (
     <div className="body w-full">
       <div className="filter h-16 flex items-center justify-between m-14 mb-6">

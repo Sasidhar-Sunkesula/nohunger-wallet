@@ -18,16 +18,26 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and Push Docker image
+      - name: Build and Push User App Docker image
         uses: docker/build-push-action@v2
         with:
           context: .
           file: ./docker/Dockerfile.user
           push: true
           tags: sasidhar6/no-hunger:latest
+          
+      - name: Build and Push Bank Webhook Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./docker/Dockerfile.webhook
+          push: true
+          tags: sasidhar6/bank-webhook:latest
 
-      - name: Verify Pushed Image
-        run: docker pull sasidhar6/no-hunger:latest
+      - name: Verify Pushed Images
+        run: |
+          docker pull sasidhar6/no-hunger:latest
+          docker pull sasidhar6/bank-webhook:latest
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
@@ -36,7 +46,14 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            # Pull and deploy user app
             sudo docker pull sasidhar6/no-hunger:latest
             sudo docker stop web-app || true
             sudo docker rm web-app || true
             sudo docker run -d --name web-app -p 3005:3000 sasidhar6/no-hunger:latest
+            
+            # Pull and deploy bank webhook
+            sudo docker pull sasidhar6/bank-webhook:latest
+            sudo docker stop webhook-app || true
+            sudo docker rm webhook-app || true
+            sudo docker run -d --name webhook-app -p 3003:3003 sasidhar6/bank-webhook:latest

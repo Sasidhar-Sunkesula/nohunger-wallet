@@ -2,24 +2,23 @@
 import ItemList, { Item } from "@/components/ItemList";
 import { RootState } from "@repo/store/appStore";
 import { clearCart, removeFromCart, setCart } from "@repo/store/cartSlice";
-import { useSelector, useDispatch } from "react-redux";
+import Spinner from "@repo/ui/spinner";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   clearCartDb,
   getCartDetails,
   getCartTotal,
   removeFromCartDb,
 } from "../lib/actions/cart";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import Spinner from "@repo/ui/spinner";
-import { makePayment } from "../lib/actions/makePayment";
 import { getBalance } from "../lib/actions/getTransactions";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { makePayment } from "../lib/actions/makePayment";
 
 export default function Cart() {
   const router = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [fetchingPrice, setFetchingPrice] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);

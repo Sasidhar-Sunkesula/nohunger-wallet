@@ -22,8 +22,20 @@ export async function createOnRampTransaction(provider: string, amount: number) 
             amount: amount
         }
     });
+    await prisma.balance.update({
+        where: {
+            userId: Number(session?.user?.id)
+        },
+        data: {
+            locked: {
+                increment: amount
+            }
+        }
+    });
 
     return {
-        message: "Done"
+        message: "Done",
+        token: token,
+        userId: session.user.id
     }
 }

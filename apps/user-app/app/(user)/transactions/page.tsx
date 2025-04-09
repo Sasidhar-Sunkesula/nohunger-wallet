@@ -1,8 +1,7 @@
 import prisma from "@repo/db/client";
-import { AddMoney } from "../../../components/AddMoneyCard";
+import { getServerSession } from "next-auth";
 import { BalanceCard } from "../../../components/BalanceCard";
 import { OnRampTransactions } from "../../../components/OnRampTransactions";
-import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 
 interface Transaction {
@@ -30,6 +29,9 @@ async function getOnRampTransactions() {
   const txns: Transaction[] = await prisma.onRampTransaction.findMany({
     where: {
       userId: Number(session?.user?.id),
+    },
+    orderBy: {
+      startTime: "desc",
     },
   });
   return txns.map((t) => ({
