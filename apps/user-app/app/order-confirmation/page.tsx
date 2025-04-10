@@ -1,14 +1,22 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Card } from "@repo/ui/card";
-import { Button } from "@repo/ui/button";
-import Link from "next/link";
-import { useDispatch } from "react-redux";
 import { clearCart } from "@repo/store/cartSlice";
+import { Button } from "@repo/ui/button";
+import { Card } from "@repo/ui/card";
+import Spinner from "@repo/ui/spinner";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { clearCartDb } from "../lib/actions/cart";
 
 export default function OrderConfirmation() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <Page />
+    </Suspense>
+  );
+}
+function Page() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const dispatch = useDispatch();
