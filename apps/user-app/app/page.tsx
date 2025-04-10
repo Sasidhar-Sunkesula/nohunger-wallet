@@ -1,4 +1,5 @@
 "use client";
+
 import NoInternet from "@/components/NoInternet";
 import RestaurantCard from "@/components/RestaurantCard";
 import Shimmer from "@/components/Shimmer";
@@ -8,7 +9,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getCartDetails } from "./lib/actions/cart";
-import { CDN_URL } from "./lib/constants";
 import { restaurantList } from "./lib/restaurantList";
 import useOnlineStatus from "./lib/useOnlineStatus";
 
@@ -108,50 +108,40 @@ export default function Page() {
     return <Shimmer />;
   }
   return (
-    <div className="body w-full">
-      <div className="filter h-16 flex items-center justify-between m-14 mb-6">
-        <div className="search-className items-center flex flex-wrap ">
-          <div>
-            <input
-              className="search-box border-2 rounded-3xl border-red-400 w-64 px-3 py-2"
-              name="search-box"
-              type="text"
-              value={searchText}
-              placeholder="search here"
-              onChange={(e) => {
-                setsearchText(e.target.value);
-              }}
-            ></input>
-          </div>
-          <div>
-            {/* <button
-              data-testid="SearchBtn"
-              classNameName="search-btn border-2 text-lg rounded-3xl py-2 w-24 font-medium px-4 bg-red-400 text-white ml-5 "
-              onClick={() => {
-                const searchList = listOfRestaurants.filter((res: any) =>
-                  res.info.name.toLowerCase().includes(searchText.toLowerCase())
-                );
-                setDupeListOfRestaurants(searchList);
-              }}
-            >
-              Search
-            </button> */}
-            <select
-              className="border-2 border-red-400 rounded-3xl px-3 py-2"
-              value={selectedPriceRange}
-              onChange={(e) => setSelectedPriceRange(e.target.value)}
-            >
-              <option value="">Select Price Range</option>
-              <option value="less than 151">Less than 150</option>
-              <option value="151-200">150-200</option>
-              <option value="201-250">200-250</option>
-              <option value="251-300">250-300</option>
-              <option value="301-500">300-500</option>
-              <option value="above 500">Above 500</option>
-            </select>
-          </div>
+    <div className="w-full">
+      <div className="flex items-center flex-wrap justify-around mt-24 mb-10">
+        {/* Search Box */}
+        <div className="items-center flex flex-wrap gap-x-2">
+          <input
+            className="search-box border-2 rounded-3xl border-red-400 w-64 px-3 py-2"
+            name="search-box"
+            type="text"
+            value={searchText}
+            placeholder="Search here..."
+            onChange={(e) => {
+              setsearchText(e.target.value);
+            }}
+          />
+          <select
+            className="border-2 border-red-400 rounded-3xl px-3 py-2"
+            value={selectedPriceRange}
+            onChange={(e) => setSelectedPriceRange(e.target.value)}
+          >
+            <option value="">Select Price Range</option>
+            <option value="less than 151">Less than 150</option>
+            <option value="151-200">150-200</option>
+            <option value="201-250">200-250</option>
+            <option value="251-300">250-300</option>
+            <option value="301-500">300-500</option>
+            <option value="above 500">Above 500</option>
+          </select>
         </div>
-        <div className="filter-btn-className  px-4 py-2 border-2 border-red-400 bg-white text-lg rounded-full text-slate-700 mr-52">
+        {/* Header */}
+        <div className="text-center font-bold text-4xl">
+          All Restaurants in Narasaraopet
+        </div>
+        {/* Top Rated Filter */}
+        <div className="px-4 py-2 border-2 border-red-400 bg-white text-lg rounded-full text-slate-700">
           <button className="filter-btn" onClick={handleTopRatedFilter}>
             {isTopRatedFiltered
               ? "Show All Restaurants"
@@ -159,10 +149,7 @@ export default function Page() {
           </button>
         </div>
       </div>
-      <div className="mb-7 text-center font-bold text-4xl">
-        All Restaurants in Narasaraopet
-      </div>
-      <div className="res-container flex gap-7 flex-wrap justify-center">
+      <div className="flex gap-7 flex-wrap justify-center">
         {dupelistOfRestaurants.map((restaurant: any) => (
           <Link
             href={"/restaurants/" + restaurant.info.id}

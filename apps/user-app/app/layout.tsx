@@ -22,7 +22,7 @@ export default function RootLayout({
         <body className={inter.className}>
           <div className="min-w-screen dark:bg-gray-800 dark:text-white min-h-screen">
             <AppbarClient />
-            {children}
+            <div className="mt-16">{children}</div>
           </div>
         </body>
       </Providers>

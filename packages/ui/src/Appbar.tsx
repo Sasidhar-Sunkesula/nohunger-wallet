@@ -21,7 +21,7 @@ export const Appbar = ({
   headerLinks,
 }: AppbarProps) => {
   return (
-    <div className="fixed w-full z-10 h-16 flex justify-between border-b py-2 px-4 border-slate-300">
+    <div className="fixed top-0 bg-white w-full z-10 h-16 flex justify-between border-b py-2 px-4 border-slate-300">
       <Link
         href={"/"}
         className="text-xl font-bold text-red-900  flex items-center justify-center"

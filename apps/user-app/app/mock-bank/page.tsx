@@ -2,12 +2,20 @@
 
 import { Button } from "@repo/ui/button";
 import { Card } from "@repo/ui/card";
+import Spinner from "@repo/ui/spinner";
 import { TextInput } from "@repo/ui/textinput";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 export default function MockBankPage() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <Page />
+    </Suspense>
+  );
+}
+function Page() {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);

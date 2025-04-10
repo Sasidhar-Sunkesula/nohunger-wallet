@@ -23,10 +23,11 @@ export default function Cart() {
   const [fetchingPrice, setFetchingPrice] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const itemList = useSelector((store: RootState) => store.cart.items);
-  const [balance, setBalance] = useState(-1);
+  const [balance, setBalance] = useState<number | null>(null);
   const dispatchFun = useDispatch();
   const session = useSession();
   const [cost, setCost] = useState(-1);
+
   const fetchCart = async (userId: number) => {
     const data = await getCartDetails(userId);
     if (!data.cart) {
@@ -84,21 +85,23 @@ export default function Cart() {
       <div className="text-xl w-4/5 text-center mt-5 mb-3 mx-auto font-bold">
         Cart - {itemList.length} items
       </div>
-      <div className="w-4/5 flex justify-between mb-5 items-center mx-auto">
-        <Link
-          className="bg-green-100 text-green-800 text-base font-medium me-2 p-2 rounded dark:bg-green-900 dark:text-green-300"
-          href={"/dashboard"}
-        >
-          {balance !== -1 && `Available wallet balance : ₹${balance}`}
-        </Link>
-        <button
-          onClick={() => handleClearCart()}
-          type="button"
-          className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-        >
-          Clear Cart
-        </button>
-      </div>
+      {balance && (
+        <div className="w-4/5 flex justify-between mb-5 items-center mx-auto">
+          <Link
+            className="bg-green-100 text-green-800 text-base font-medium me-2 p-2 rounded dark:bg-green-900 dark:text-green-300"
+            href={"/dashboard"}
+          >
+            {`Available wallet balance : ₹${balance}`}
+          </Link>
+          <button
+            onClick={() => handleClearCart()}
+            type="button"
+            className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >
+            Clear Cart
+          </button>
+        </div>
+      )}
       {loading ? (
         <Spinner />
       ) : (
@@ -142,7 +145,7 @@ export default function Cart() {
                   : `Pay ${fetchingPrice ? "..." : cost} with wallet`}
               </button>
             </div>
-          )} 
+          )}
         </div>
       )}
     </div>
