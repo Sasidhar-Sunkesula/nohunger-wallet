@@ -1,17 +1,28 @@
 "use server";
 
+import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
-import prisma from "@repo/db/client";
 import { getCartTotal } from "./cart";
-import { redirect } from "next/navigation";
-import { NextResponse } from "next/server";
 
-export async function makePayment() {
+export async function makePayment(): Promise<
+  | {
+      status: "success";
+      orderId: number;
+      orderTotal: number;
+      updatedBalance: number;
+      userId: number;
+    }
+  | {
+      status: "error";
+      message: string;
+    }
+> {
   // check if user exists
   const session = await getServerSession(authOptions);
   if (!session?.user || !session.user.id) {
     return {
+      status: "error",
       message: "Unauthenticated request",
     };
   }
@@ -37,8 +48,7 @@ export async function makePayment() {
         },
       });
       if (!walletBalance || walletBalance.amount < totalCost.cost) {
-        // throw Error("Insufficient funds");
-        redirect("/");
+        throw Error("Insufficient funds");
       }
       if (walletBalance.amount > totalCost.cost) {
         const updateBalance = await prisma.balance.update({
@@ -59,17 +69,24 @@ export async function makePayment() {
             orderTotal: totalCost.cost,
           },
         });
+
         if (!order) {
           throw Error("Error while placing the order");
         }
+
         return {
+          status: "success",
+          orderId: order.id,
+          orderTotal: totalCost.cost,
           updatedBalance: updateBalance.amount,
-          message: order,
+          userId,
         };
       }
-    } else {
-      throw Error("Cost of the cart is less than or equal to zero");
     }
+    return {
+      status: "error",
+      message: "Cost of the cart is less than or equal to zero",
+    };
   } catch (error: any) {
     return {
       status: "error",

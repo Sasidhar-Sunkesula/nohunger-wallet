@@ -129,11 +129,27 @@ export default function Cart() {
               <button
                 onClick={async () => {
                   setIsProcessing(true);
-                  const response = await makePayment();
-                  fetchBalance();
-                  setIsProcessing(false);
-                  if (response?.status === "error") {
-                    router.push("/transfer");
+                  try {
+                    const result = await makePayment();
+                    if (result.status === "success") {
+                      // Redirect to order confirmation page with order details
+                      const params = new URLSearchParams({
+                        orderId: result.orderId.toString(),
+                        orderTotal: result.orderTotal.toString(),
+                        updatedBalance: result.updatedBalance.toString(),
+                        userId: result.userId.toString(),
+                      });
+                      router.push(`/order-confirmation?${params.toString()}`);
+                    } else {
+                      // Handle error
+                      throw new Error(result.message);
+                    }
+                  } catch (error: any) {
+                    console.error("Payment error:", error);
+                    setIsProcessing(false);
+                    if (error?.message?.includes("Insufficient")) {
+                      router.push("/transfer");
+                    }
                   }
                 }}
                 type="button"
