@@ -51,7 +51,7 @@ export default function Cart() {
   };
   const handleDelete = async (index: number, item: Item) => {
     const userId = session.data?.user.id;
-    dispatchFun(removeFromCart(index));
+    dispatchFun(removeFromCart({ id: item.id }));
     await removeFromCartDb(parseInt(userId!), item.id);
   };
   // If session.data?.user is not available at the time of component mounting, the fetchCart function will not be called, even if session.data?.user becomes available later.

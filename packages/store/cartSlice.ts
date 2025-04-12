@@ -57,11 +57,6 @@ const cartSlice = createSlice({
         }
       }
     },
-    // Action to completely remove an item regardless of quantity (optional, might be useful)
-    removeItem: (state, action: PayloadAction<{ id: number }>) => {
-      const { id } = action.payload;
-      state.items = state.items.filter((item) => item.id !== id);
-    },
     // Action to clear the entire cart
     clearCart: (state) => {
       state.items = [];
@@ -69,6 +64,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const { setCart, addToCart, removeFromCart, removeItem, clearCart } =
+export const { setCart, addToCart, removeFromCart, clearCart } =
   cartSlice.actions;
 export const cartReducer = cartSlice.reducer;

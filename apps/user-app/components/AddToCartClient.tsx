@@ -1,22 +1,28 @@
 "use client";
+import { addToCartDb, removeFromCartDb } from "@/app/lib/actions/cart";
+import { RootState } from "@repo/store/appStore";
+import { addToCart, removeFromCart } from "@repo/store/cartSlice";
+import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
+import { FaMinus, FaPlus } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Item } from "./ItemList";
-import { addToCart, removeFromCart, CartItem } from "@repo/store/cartSlice";
-import { addToCartDb, removeFromCartDb } from "@/app/lib/actions/cart";
-import { useSession } from "next-auth/react";
-import toast from 'react-hot-toast';
-import { RootState } from "@repo/store/appStore";
-import { FaPlus, FaMinus } from "react-icons/fa";
 
-export type AddToCartClientProps = Omit<Item, 'quantity'>;
+export type AddToCartClientProps = Omit<Item, "quantity">;
 
-export function AddToCartClient({ id, name, price, ratings, imageId }: AddToCartClientProps) {
+export function AddToCartClient({
+  id,
+  name,
+  price,
+  ratings,
+  imageId,
+}: AddToCartClientProps) {
   const session = useSession();
   const userId = session.data?.user?.id;
   const dispatch = useDispatch();
 
   const cartItem = useSelector((state: RootState) =>
-    state.cart.items.find(item => item.id === id)
+    state.cart.items.find((item) => item.id === id)
   );
 
   const itemPayload = { id, name, price, ratings, imageId };
@@ -26,10 +32,17 @@ export function AddToCartClient({ id, name, price, ratings, imageId }: AddToCart
       toast.error("Please log in to add items to the cart.");
       return;
     }
-    dispatch(addToCart(itemPayload));
-    toast.success(`${name} added to cart!`);
+    const modifiedItem = {
+      ...itemPayload,
+      price: price || 0,
+      ratings: ratings || 0,
+      imageId: imageId || "",
+    };
+    dispatch(addToCart(modifiedItem));
+    const loadingId = toast.loading(`${name} adding to cart...`);
     try {
-      const result = await addToCartDb(parseInt(userId), itemPayload);
+      const result = await addToCartDb(parseInt(userId), modifiedItem);
+      toast.success(`${name} added to cart!`, { id: loadingId });
       if (result.error) {
         console.error("DB Error adding item:", result.error);
         toast.error(`Failed to save ${name} to cart.`);
