@@ -81,14 +81,14 @@ export default function Cart() {
   }, [itemList, session.data?.user]);
 
   return (
-    <div className="w-3/5 mt-4 shadow-xl rounded-lg p-4 mx-auto relative">
-      <div className="text-xl w-4/5 text-center mt-5 mb-3 mx-auto font-bold">
+    <div className="w-full sm:w-4/5 md:w-3/5 mt-4 shadow-xl rounded-lg p-3 sm:p-4 mx-auto relative">
+      <div className="text-lg sm:text-xl w-full sm:w-4/5 text-center mt-3 sm:mt-5 mb-3 mx-auto font-bold">
         Cart - {itemList.length} items
       </div>
       {balance && (
-        <div className="w-4/5 flex justify-between mb-5 items-center mx-auto">
+        <div className="w-full sm:w-4/5 flex flex-col sm:flex-row justify-between mb-5 items-center gap-3 sm:gap-0 mx-auto">
           <Link
-            className="bg-green-100 text-green-800 text-base font-medium me-2 p-2 rounded dark:bg-green-900 dark:text-green-300"
+            className="bg-green-100 text-green-800 text-sm sm:text-base font-medium p-2 rounded dark:bg-green-900 dark:text-green-300 w-full sm:w-auto text-center"
             href={"/dashboard"}
           >
             {`Available wallet balance : ₹${balance}`}
@@ -96,7 +96,7 @@ export default function Cart() {
           <button
             onClick={() => handleClearCart()}
             type="button"
-            className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+            className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full sm:w-auto"
           >
             Clear Cart
           </button>

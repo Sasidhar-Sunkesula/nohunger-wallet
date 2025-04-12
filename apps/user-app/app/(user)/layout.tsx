@@ -1,13 +1,76 @@
+"use client";
 import { SidebarItem } from "../../components/SidebarItem";
+import { useState, useEffect } from "react";
 
 export default function Layout({
   children,
 }: {
   children: React.ReactNode;
 }): JSX.Element {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if we're on mobile when component mounts and on window resize
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+      if (window.innerWidth >= 768) {
+        setIsSidebarOpen(true);
+      } else {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    // Initial check
+    checkIfMobile();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", checkIfMobile);
+
+    // Cleanup
+    return () => window.removeEventListener("resize", checkIfMobile);
+  }, []);
+
   return (
-    <div className="flex">
-      <div className="w-72 border-r mt-16 border-slate-300 h-full md:h-[calc(100vh-64px)] mr-4 pt-28">
+    <div className="flex flex-col md:flex-row relative">
+      {/* Mobile sidebar toggle button */}
+      {isMobile && (
+        <button
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="fixed bottom-4 right-4 z-50 bg-purple-600 text-white p-3 rounded-full shadow-lg"
+          aria-label="Toggle sidebar"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            {isSidebarOpen ? (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            ) : (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              />
+            )}
+          </svg>
+        </button>
+      )}
+
+      {/* Sidebar */}
+      <div
+        className={`${isMobile ? 'fixed' : 'relative'} ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'} 
+        transition-transform duration-300 ease-in-out z-40 bg-white dark:bg-gray-800 
+        w-72 border-r mt-16 border-slate-300 h-[calc(100vh-64px)] md:mr-4 pt-28`}
+      >
         <div>
           <SidebarItem href={"/dashboard"} icon={<HomeIcon />} title="Home" />
           <SidebarItem
@@ -27,7 +90,11 @@ export default function Layout({
           />
         </div>
       </div>
-      {children}
+
+      {/* Main content */}
+      <div className="flex-1 px-4 md:px-0">
+        {children}
+      </div>
     </div>
   );
 }

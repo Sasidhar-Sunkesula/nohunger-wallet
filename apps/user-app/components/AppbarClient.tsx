@@ -12,7 +12,12 @@ interface LinkProps {
 export function AppbarClient() {
   const session = useSession();
   const router = useRouter();
-  const cartLength = useSelector((store: RootState) => store.cart.items.length);
+
+  // Calculate total quantity of items in the cart
+  const totalCartQuantity = useSelector((state: RootState) =>
+    state.cart.items.reduce((total, item) => total + item.quantity, 0)
+  );
+
   const headerLinks: LinkProps[] = [
     {
       to: "/dashboard",
@@ -20,7 +25,8 @@ export function AppbarClient() {
     },
     {
       to: "/cart",
-      text: `Cart-${cartLength} items`,
+      // Update text to show total quantity
+      text: `Cart-${totalCartQuantity} item${totalCartQuantity !== 1 ? 's' : ''}`,
     },
   ];
   return (

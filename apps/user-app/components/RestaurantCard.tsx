@@ -22,20 +22,21 @@ const RestaurantCard = (props: CardProps) => {
   const { name, cuisines, avgRating, cloudinaryImageId, costForTwo, id } =
     resData.info;
   return (
-    <div className="w-[330px] h-80 border-2 rounded-lg hover:shadow-2xl shadow-lg ">
+    <div className="w-full sm:w-[280px] md:w-[330px] h-auto sm:h-80 border-2 rounded-lg hover:shadow-2xl shadow-lg transition-shadow duration-300 bg-white dark:bg-gray-800">
       <img
         src={CDN_URL + cloudinaryImageId}
-        className="res-img mx-auto  my-4 w-11/12 h-2/4 object-cover rounded-lg"
+        className="res-img mx-auto my-4 w-11/12 h-40 sm:h-2/4 object-cover rounded-lg"
         alt={name}
+        loading="lazy"
       />
 
-      <div className="font-bold dark:text-white text-slate-800 px-1 text-lg text-center ">
+      <div className="font-bold dark:text-white text-slate-800 px-2 text-base sm:text-lg text-center truncate">
         {name}
       </div>
-      <div className="font-bold dark:text-white p-2 text-slate-600 text-center text-sm">
+      <div className="font-bold dark:text-white p-2 text-slate-600 text-center text-xs sm:text-sm truncate">
         {cuisines.join(", ")}
       </div>
-      <div className="flex text-slate-700 dark:text-white justify-around flex-wrap text-base mt-2 font-bold">
+      <div className="flex text-slate-700 dark:text-white justify-around flex-wrap text-sm sm:text-base mt-2 mb-4 sm:mb-0 font-bold">
         <div>
           {avgRating}⭐{id}
         </div>

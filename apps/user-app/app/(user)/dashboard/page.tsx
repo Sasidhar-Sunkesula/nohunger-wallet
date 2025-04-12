@@ -23,17 +23,17 @@ export default async function () {
     provider: "",
   }));
   return (
-    <div className="flex flex-col gap-3 w-max mx-auto p-16">
-      <div className="text-3xl font-bold mt-6">
+    <div className="flex flex-col gap-3 w-full max-w-3xl mx-auto p-4 sm:p-8 md:p-12 lg:p-16">
+      <div className="text-2xl sm:text-3xl font-bold mt-2 sm:mt-6">
         Welcome to your Dashboard{" "}
         <span className="text-blue-600">{session.user.name}</span>
       </div>
-      <div className="text-xl font-normal">
+      <div className="text-base sm:text-xl font-normal">
         Add money into your wallet 👜 and avail exclusive offers and cashbacks
         💵
       </div>
-      <div className="text-xl font-normal">Supports Multiple banks</div>
-      <div className="text-xl font-normal">Secure transactions</div>
+      <div className="text-base sm:text-xl font-normal">Supports Multiple banks</div>
+      <div className="text-base sm:text-xl font-normal">Secure transactions</div>
       <BalanceCard amount={balance.amount} locked={balance.locked} />
       <div className="pt-4">
         <OnRampTransactions

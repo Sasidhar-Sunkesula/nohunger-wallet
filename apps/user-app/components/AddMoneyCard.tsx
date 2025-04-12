@@ -14,7 +14,7 @@ export const AddMoney = () => {
 
   return (
     <Card title="Add Money">
-      <div className="w-full">
+      <div className="w-full max-w-sm mx-auto">
         <TextInput
           label={"Amount"}
           placeholder={"Amount"}
