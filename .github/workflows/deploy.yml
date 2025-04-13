@@ -25,6 +25,8 @@ jobs:
           file: ./docker/Dockerfile.user
           push: true
           tags: sasidhar6/no-hunger:latest
+          build-args: |
+            NEXT_PUBLIC_WEBHOOK_URL=${{ secrets.NEXT_PUBLIC_WEBHOOK_URL }}
 
       - name: Build and Push Bank Webhook Docker image
         uses: docker/build-push-action@v2
@@ -46,6 +48,10 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            # Delete old images
+            docker rmi sasidhar6/no-hunger:latest || true
+            docker rmi sasidhar6/bank-webhook:latest || true
+
             # Pull and deploy user app
             docker pull sasidhar6/no-hunger:latest
             docker stop web-app || true
