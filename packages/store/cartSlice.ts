@@ -23,8 +23,26 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     // Action to completely overwrite the cart (e.g., when loading from DB)
-    setCart: (state, action: PayloadAction<CartItem[]>) => {
-      state.items = action.payload;
+    setCart: (state, action: PayloadAction<Omit<CartItem, "quantity">[]>) => {
+      // Create a map to count quantities for each unique item ID
+      const itemQuantityMap = new Map<number, number>();
+
+      // Count quantities for each item ID
+      action.payload.forEach((item) => {
+        const currentQuantity = itemQuantityMap.get(item.id) || 0;
+        itemQuantityMap.set(item.id, currentQuantity + 1);
+      });
+
+      // Create a deduplicated array with proper quantities
+      const uniqueItems = Array.from(
+        new Map(action.payload.map((item) => [item.id, item])).values()
+      );
+
+      // Apply the counted quantities to the unique items
+      state.items = uniqueItems.map((item) => ({
+        ...item,
+        quantity: itemQuantityMap.get(item.id) || 1,
+      }));
     },
     // Action to add an item or increment its quantity
     addToCart: (state, action: PayloadAction<Omit<CartItem, "quantity">>) => {

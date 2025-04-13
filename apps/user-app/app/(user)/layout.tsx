@@ -68,8 +68,8 @@ export default function Layout({
       {/* Sidebar */}
       <div
         className={`${isMobile ? 'fixed' : 'relative'} ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'} 
-        transition-transform duration-300 ease-in-out z-40 bg-white dark:bg-gray-800 
-        w-72 border-r mt-16 border-slate-300 h-[calc(100vh-64px)] md:mr-4 pt-28`}
+        transition-transform duration-300 ease-in-out bg-white dark:bg-gray-800 
+        w-56 border-r border-slate-300 h-[calc(100vh-64px)] md:mr-4 pt-28`}
       >
         <div>
           <SidebarItem href={"/dashboard"} icon={<HomeIcon />} title="Home" />

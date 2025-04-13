@@ -3,32 +3,12 @@
 import NoInternet from "@/components/NoInternet";
 import RestaurantCard from "@/components/RestaurantCard";
 import Shimmer from "@/components/Shimmer";
-import { setCart } from "@repo/store/cartSlice";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { getCartDetails } from "./lib/actions/cart";
 import { restaurantList } from "./lib/restaurantList";
 import useOnlineStatus from "./lib/useOnlineStatus";
 
 export default function Page() {
-  const dispatch = useDispatch();
-  const fetchCart = async (userId: number) => {
-    const data = await getCartDetails(userId);
-    if (!data.cart) {
-      return;
-    }
-    console.log(data);
-    const cartData = data.cart[0].CartItems.map((item: any) => item.Items);
-    dispatch(setCart(cartData));
-  };
-  const session = useSession();
-  if (session.data?.user) {
-    const userId = session.data?.user.id;
-    fetchCart(parseInt(userId));
-  }
-
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
   const [dupelistOfRestaurants, setDupeListOfRestaurants] = useState([]);
   const [searchText, setsearchText] = useState("");
@@ -113,7 +93,7 @@ export default function Page() {
         <input
           className="border border-solid border-black dark:border-gray-600 rounded-lg py-[5px] px-[10px] w-full sm:w-1/2 md:w-1/3 dark:bg-gray-700 dark:text-white"
           type="text"
-          placeholder="Search for restaurants and food..."
+          placeholder="Search for restaurants..."
           value={searchText}
           onChange={(e) => {
             setsearchText(e.target.value);

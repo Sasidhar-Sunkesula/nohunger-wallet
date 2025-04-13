@@ -8,7 +8,7 @@ export const SidebarItem = ({ href, title, icon }: { href: string; title: string
     const selected = pathname === href
 
     return <div 
-        className={`flex items-center ${selected ? "text-[#6a51a6]" : "text-slate-500"} cursor-pointer p-2 pl-4 md:pl-8 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200 my-1`} 
+        className={`flex items-center ${selected ? "text-[#6a51a6]" : "text-slate-500"} cursor-pointer p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200 my-1`} 
         onClick={() => {
             router.push(href);
         }}

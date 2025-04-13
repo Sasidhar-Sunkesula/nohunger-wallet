@@ -47,7 +47,7 @@ export async function p2pTransfer(to: string, amount: number) {
       if (!fromUser) {
         throw new Error("User not found");
       }
-      if (fromUser.number !== from) {
+      if (fromUser.number === toUser.number) {
         throw new Error("Can't send to yourself");
       }
 

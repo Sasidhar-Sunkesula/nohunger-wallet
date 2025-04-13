@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "../provider";
 import { AppbarClient } from "../components/AppbarClient";
-import { Toaster } from 'react-hot-toast';
+import { CartDataProvider } from "../components/CartDataProvider";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +27,9 @@ export default function RootLayout({
         <body className={inter.className}>
           <div className="min-w-screen dark:bg-gray-800 dark:text-white min-h-screen">
             <AppbarClient />
-            <div className="mt-16 px-4 md:px-6 lg:px-8">{children}</div>
+            <CartDataProvider>
+              <div className="mt-16 px-4 md:px-6 lg:px-8">{children}</div>
+            </CartDataProvider>
             <Toaster position="top-center" reverseOrder={false} />
           </div>
         </body>

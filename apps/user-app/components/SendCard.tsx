@@ -27,10 +27,10 @@ export function SendCard() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-2/5">
       <Center>
         <Card title="Send">
-          <div className="w-full pt-2">
+          <div className="pt-2">
             <TextInput
               placeholder={"Number"}
               label="Phone Number"
